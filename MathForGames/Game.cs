@@ -13,6 +13,7 @@ namespace MathForGames
         private Scene _scene;
         private Actor _actor;
         private Player _player;
+        private PatrolEnemy _pEnemy;
 
         public static ConsoleColor DefaultColor { get; set; } = ConsoleColor.White;
 
@@ -32,10 +33,15 @@ namespace MathForGames
             _scene = new Scene();
             _actor = new Actor(new Vector2(10, 10), 'O', ConsoleColor.Red);
             _actor.Velocity.X = 1;
+            _pEnemy = new PatrolEnemy(new Vector2(15, 30), new Vector2(3, 0));
+
             _player = new Player(new Vector2());
 
             _scene.AddActor(_actor);
             _scene.AddActor(_player);
+            _scene.AddActor(_pEnemy);
+
+            _scene.Start();
         }
 
 
@@ -56,7 +62,7 @@ namespace MathForGames
         //Called when the game ends.
         public void End()
         {
-
+            _scene.End();
         }
 
 
