@@ -1,31 +1,78 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using MathLibrary;
 
 namespace MathForGames
 {
     class Actor
     {
-        private char _icon = 'a';
-        private int _x = 0;
+        protected char _icon = 'a';
+        protected Vector2 _position;
+        protected Vector2 _velocity;
+        protected ConsoleColor _actorColor;
 
-        public void Start()
+        public Vector2 Position
+        {
+            get
+            {
+                return _position;
+            }
+            set
+            {
+                _position = value;
+            }
+        }
+
+        public Vector2 Velocity
+        {
+            get
+            {
+                return _velocity;
+            }
+            set
+            {
+                _velocity = value;
+            }
+        }
+        
+        public Actor()
+        {
+            _position = new Vector2();
+            _velocity = new Vector2();
+            _actorColor = ConsoleColor.Green;
+        }
+
+        public Actor(Vector2 position, char icon = 'a', ConsoleColor color = ConsoleColor.Green)
+        {
+            _icon = icon;
+            _position = position;
+            _velocity = new Vector2();
+            _actorColor = color;
+        }
+        
+        public virtual void Start()
         {
 
         }
 
-        public void Update()
+        public virtual void Update()
         {
-            _x++;
+            _position.X += _velocity.X;
+            _position.Y += _velocity.Y;
+            _position.X = Math.Clamp(_position.X, 0, Console.WindowWidth - 1);
+            _position.Y = Math.Clamp(_position.Y, 0, Console.WindowHeight - 1);
         }
 
-        public void Draw()
+        public virtual void Draw()
         {
-            Console.SetCursorPosition(_x, 0);
+            Console.ForegroundColor = _actorColor;
+            Console.SetCursorPosition((int) _position.X, (int) _position.Y);
             Console.Write(_icon);
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public void End()
+        public virtual void End()
         {
 
         }

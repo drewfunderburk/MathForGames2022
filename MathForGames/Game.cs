@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Text;
+using MathLibrary;
 
 namespace MathForGames
 {
@@ -10,6 +12,10 @@ namespace MathForGames
         private static bool _gameOver = false;
         private Scene _scene;
         private Actor _actor;
+        private Player _player;
+
+        public static ConsoleColor DefaultColor { get; set; } = ConsoleColor.White;
+
 
         //Static function used to set game over without an instance of game.
         public static void SetGameOver(bool value)
@@ -21,9 +27,15 @@ namespace MathForGames
         //Called when the game begins. Use this for initialization.
         public void Start()
         {
+            Console.CursorVisible = false;
+
             _scene = new Scene();
-            _actor = new Actor();
+            _actor = new Actor(new Vector2(10, 10), 'O', ConsoleColor.Red);
+            _actor.Velocity.X = 1;
+            _player = new Player(new Vector2());
+
             _scene.AddActor(_actor);
+            _scene.AddActor(_player);
         }
 
 
@@ -57,23 +69,28 @@ namespace MathForGames
             {
                 Update();
                 Draw();
-                Console.ReadKey(true);
+                while (Console.KeyAvailable)
+                    Console.ReadKey(true);
+                System.Threading.Thread.Sleep(150);
             }
 
             End();
         }
 
-        // Return whether or not the specified ConsoleKey is pressed
-        public static bool CheckKey(ConsoleKey key)
+        /// <summary>
+        /// Return whether or not a key is pressed
+        /// </summary>
+        /// <returns>The pressed ConsoleKey</returns>
+        public static ConsoleKey GetNextKey()
         {
-            if (Console.KeyAvailable)
+            // If the user hasn't pressed a key, return
+            if (!Console.KeyAvailable)
             {
-                if (Console.ReadKey(true).Key == key)
-                {
-                    return true;
-                }
+                return 0;
             }
-            return false;
+
+            // Return the key that was pressed
+            return Console.ReadKey(true).Key;
         }
 
     }
