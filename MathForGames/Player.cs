@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Raylib_cs;
 
 namespace MathForGames
 {
@@ -12,10 +13,13 @@ namespace MathForGames
 
         }
 
-        public Player(Vector2 position, char icon = '@', ConsoleColor color = ConsoleColor.Green) : base(position, icon, color)
-        {
+        public Player(Vector2 position, char icon = '@', ConsoleColor color = ConsoleColor.Green) 
+            : base(position, icon, color) 
+        { }
 
-        }
+        public Player(Vector2 position, Color color, char icon = '@', ConsoleColor consoleColor = ConsoleColor.Green)
+            : base(position, color, consoleColor, icon)
+        { }
 
         public override void Start()
         {

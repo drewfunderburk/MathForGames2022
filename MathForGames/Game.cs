@@ -4,6 +4,7 @@ using System.Dynamic;
 using System.IO;
 using System.Text;
 using MathLibrary;
+using Raylib_cs;
 
 namespace MathForGames
 {
@@ -28,10 +29,22 @@ namespace MathForGames
         //Called when the game begins. Use this for initialization.
         public void Start()
         {
-            Console.CursorVisible = false;
+            // Creates new window for Raylib
+            Raylib.InitWindow(1024, 760, "Math For Games");
 
+            // Set target fps
+            Raylib.SetTargetFPS(60);
+
+            // Setup console window
+            Console.CursorVisible = false;
+            Console.Title = "Math For Games";
+
+            // Creates a new scene for our actors
             _scene = new Scene();
-            _actor = new Actor(new Vector2(10, 10), 'O', ConsoleColor.Red);
+
+            // Creates a new actor
+            _actor = new Actor(new Vector2(10, 10), Color.RED, ConsoleColor.Red, 'a');
+
             _actor.Velocity.X = 1;
             _pEnemy = new PatrolEnemy(new Vector2(15, 30), new Vector2(3, 0));
 
@@ -41,6 +54,7 @@ namespace MathForGames
             _scene.AddActor(_player);
             _scene.AddActor(_pEnemy);
 
+
             _scene.Start();
         }
 
@@ -48,14 +62,22 @@ namespace MathForGames
         //Called every frame.
         public void Update()
         {
+            
             _scene.Update();
         }
 
         //Used to display objects and other info on the screen.
         public void Draw()
         {
+            Raylib.BeginDrawing();
+
+            Raylib.ClearBackground(Color.BLACK);
+            Raylib.DrawRectangle(500, 500,30,30,Color.GREEN);
+
             Console.Clear();
             _scene.Draw();
+
+            Raylib.EndDrawing();
         }
 
 
@@ -71,7 +93,7 @@ namespace MathForGames
         {
             Start();
 
-            while (!_gameOver)
+            while (!_gameOver && !Raylib.WindowShouldClose())
             {
                 Update();
                 Draw();
